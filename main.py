@@ -16,8 +16,7 @@ import subprocess
 try:
     import RPi.GPIO as GPIO
 except RuntimeError:
-    print "Error importing RPi.GPIO library! Try running with as root."
-
+	print "Error importing RPi.GPIO library! Try running with as root."
 
 class SpyCam(object):
     """
@@ -26,10 +25,10 @@ class SpyCam(object):
 
     def __init__(self):
         self._pins = {
-            'pir': 21  # Configurable to any GPIO pin
+            'pir': 21 #Configurable to any GPIO pin
         }
         self._states = {
-            'pir': True  # congiruable boolean for usage of PIR
+            'pir': True #congiruable boolean for usage of PIR
         }
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.get_pin('pir'), GPIO.IN)

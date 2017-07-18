@@ -24,6 +24,11 @@ class SpyCam(object):
     """
 
     def __init__(self):
+        self._paths = {
+            'output': {
+                'image': './Files/img/'
+            }
+        }
         self._pins = {
             'pir': 21 #Configurable to any GPIO pin
         }
@@ -75,13 +80,11 @@ class SpyCam(object):
         """
 
         timestamp = datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
-        outfile = 'Image' + timestamp + '.jpg'
+        outfile = self._paths['output']['image'] + 'Image' + timestamp + '.jpg'
         subprocess.call(['raspistill', '-o', outfile])
-        return 'Image Captured!'
-
+        print 'Image Captured! Saved as: ' + outfile
 
 if __name__ == '__main__':
     CAM = SpyCam()
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(CAM.get_pin('pir'), GPIO.IN)
-    input('Press ENTER to exit')

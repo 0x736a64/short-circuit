@@ -1,5 +1,10 @@
 #!env/bin/python
 
+# VERSION: 0.0.1
+# DESCRIPTION: A Home Automation/Sensor API for RPi
+# AUTHOR: 0x736a64
+# CODENAME: Short Circuit
+
 """
 ShortCircuit::SpyCam - motion triggered camera on Raspberry Pi
 
@@ -11,7 +16,7 @@ import subprocess
 try:
 	import RPi.GPIO as GPIO
 except RuntimeError:
-	print "Error importing RPi.GPIO library! Try running with sudo or as root."
+	print "Error importing RPi.GPIO library! Try running with as root."
 
 class SpyCam(object):
     """
@@ -19,13 +24,14 @@ class SpyCam(object):
     """
     def __init__(self):
         self._pins = {
-            'pir': 21
+            'pir': 21 #Configurable to any GPIO pin
         }
         self._states = {
-            'pir': False
+            'pir': True #congiruable boolean for usage of PIR
         }
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.get_pin('pir'), GPIO.IN)
+        self.activate_pir()
 
     def get_pin(self, key):
         """
@@ -54,11 +60,11 @@ class SpyCam(object):
 
         """
 
-        if self.get_state('pir'):
+        if self.get_state('pir') == True:
             while True:
                 if GPIO.input(self.get_pin('pir')):
                     self.take_still()
-                    time.sleep(1)
+            time.sleep(1)
         return None
 
     def take_still(self):
@@ -72,6 +78,9 @@ class SpyCam(object):
         subprocess.call(['raspistill', '-o', outfile])
         return 'Image Captured!'
 
+
 if __name__ == '__main__':
-    cam = SpyCam()
+    CAM = SpyCam()
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(CAM.get_pin('pir'), GPIO.IN)
     input('Press ENTER to exit')

@@ -74,4 +74,4 @@ class SpyCam(object):
 
 if __name__ == '__main__':
     cam = SpyCam()
-    input('Press ENTER to exit")
+    input('Press ENTER to exit')
